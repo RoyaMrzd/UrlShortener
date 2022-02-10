@@ -37,9 +37,9 @@ namespace UrlShortener.WebApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<UrlShortenerListResultQuery>> GetAll()
+        public async Task<ActionResult<UrlShortenerAccessHistoryListResultQuery>> GetAll()
         {
-            var result = await mediator.Send(new UrlShortenerListRequestQuery());
+            var result = await mediator.Send(new UrlShortenerAccessHistoryListRequestQuery());
 
             return base.Ok(result);
         }
@@ -56,6 +56,11 @@ namespace UrlShortener.WebApi.Controllers
 
             return Redirect(result.ReturnUrl);
         }
+
+
+
+
+
     }
 
 }
