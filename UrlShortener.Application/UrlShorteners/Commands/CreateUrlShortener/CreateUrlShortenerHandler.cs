@@ -13,24 +13,35 @@ using UrlShortener.Persistence.Interfaces;
 
 namespace UrlShortener.Application.UrlShorteners.Commands.CreateUrlShortener
 {
-    public class CreateUrlShortenerCommandHandler : IRequestHandler<CreateUrlShortenerCommand, CreateUrlShortenerResult>
+    public class CreateUrlShortenerHandler : IRequestHandler<CreateUrlShortener, CreateUrlShortenerResult>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CreateUrlShortenerCommandHandler(IUnitOfWork unitOfWork)
+        public CreateUrlShortenerHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<CreateUrlShortenerResult> Handle(CreateUrlShortenerCommand request, CancellationToken cancellationToken)
+        public async Task<CreateUrlShortenerResult> Handle(CreateUrlShortener request, CancellationToken cancellationToken)
         {
-            CheckForDuplicatedUrl(request.Url);
+            var urls = _unitOfWork.UrlShorteners.GetAll().Result;
 
-            string token = GenerateToken();
+            if (urls.Any(u => u.MainUrl == request.Url))
+                throw new DuplicatedException("این آدرس قبلا وارد شده است");
+
+            if (urls.Any(u => u.ShortestUrl == request.Url))
+                throw new DuplicatedException("این آدرس کوتاه شده است");
+
+            string token ="";
+            do
+            {
+                token = GenerateToken();
+            } while (urls.Any(x => x.Token == token));
+
             var entity = new UrlShortenerEntity()
             {
                 Token = token,
                 MainUrl = request.Url,
-                ShortestUrl = new UrlShortenerConfig().Config.BASE_URL + token
+                ShortestUrl = new UrlShortenerConfig().Config.BASE_URL + token,
             };
 
             await _unitOfWork.UrlShorteners.Add(entity);
@@ -42,17 +53,7 @@ namespace UrlShortener.Application.UrlShorteners.Commands.CreateUrlShortener
             };
         }
 
-        private void CheckForDuplicatedUrl(string url)
-        {
-            var urls = _unitOfWork.UrlShorteners.GetAll().Result;
-
-            if (urls.Any(u => u.MainUrl == url))
-                throw new DuplicatedException("این آدرس قبلا وارد شده است");
-
-            if (urls.Any(u => u.ShortestUrl == url))
-                throw new DuplicatedException("این آدرس کوتاه شده است");
-
-        }
+ 
         private string GenerateToken()
         {
             string urlsafe = string.Empty;

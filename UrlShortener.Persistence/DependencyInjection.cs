@@ -26,6 +26,7 @@ namespace UrlShortener.Persistence
             
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUrlShortenerRepository, UrlShortenerRepository>();
+            services.AddTransient<IUrlShortenerAccessHistoryRepository, UrlShortenerAccessHistoryRepository>();
 
 
             return services;

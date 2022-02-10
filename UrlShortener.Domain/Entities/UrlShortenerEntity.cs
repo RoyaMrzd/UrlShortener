@@ -14,13 +14,7 @@ namespace UrlShortener.Domain.Entities
         public string MainUrl { get; set; }
         public string ShortestUrl { get; set; }
         public string Token { get; set; }
-        public int ShortestCount { get; set; }
 
-
-
-
-
-
-
+        public ICollection<UrlShortenerAccessHistory> UrlShortenerAccessHistories { get; set; }
     }
 }

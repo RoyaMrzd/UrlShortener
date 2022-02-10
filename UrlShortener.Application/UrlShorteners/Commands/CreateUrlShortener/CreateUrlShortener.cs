@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UrlShortener.Application.UrlShorteners.Commands.CreateUrlShortener
 {
-    public class CreateUrlShortenerCommand : IRequest<CreateUrlShortenerResult>
+    public class CreateUrlShortener : IRequest<CreateUrlShortenerResult>
     {
         public string Url { get; set; }
     }

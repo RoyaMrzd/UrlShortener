@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using UrlShortener.Persistence.Configurations;
 
 namespace UrlShortener.Persistence
 {
@@ -17,6 +18,7 @@ namespace UrlShortener.Persistence
         }
 
         public DbSet<UrlShortenerEntity> UrlShortenerEntities { get; set; }
+        public DbSet<UrlShortenerAccessHistory> UrlShortenerAccessHistories { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
@@ -43,6 +45,7 @@ namespace UrlShortener.Persistence
         {
             //base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new UrlShortenerEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new UrlShortenerAccessHistoryConfiguration());
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(UrlShortenerDbContext).Assembly);
 
         }

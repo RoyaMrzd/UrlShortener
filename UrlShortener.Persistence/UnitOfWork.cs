@@ -10,16 +10,19 @@ using UrlShortener.Persistence.Interfaces;
 
 namespace UrlShortener.Persistence
 {
-    public class UnitOfWork :IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly IUrlShortenerDbContext _dbContext;
         public IUrlShortenerRepository UrlShorteners { get; }
+        public IUrlShortenerAccessHistoryRepository UrlShortenerAccessHistories { get; }
 
         public UnitOfWork(IUrlShortenerDbContext dbContext,
-            IUrlShortenerRepository urlShorteners)
+            IUrlShortenerRepository urlShorteners,
+            IUrlShortenerAccessHistoryRepository urlShortenerAccessHistories)
         {
-           _dbContext = dbContext;
-           UrlShorteners = urlShorteners;
+            _dbContext = dbContext;
+            UrlShorteners = urlShorteners;
+            UrlShortenerAccessHistories = urlShortenerAccessHistories;
         }
 
         public async Task CommitChanges(CancellationToken cancellationToken)
@@ -39,6 +42,6 @@ namespace UrlShortener.Persistence
             }
         }
 
-       
+
     }
 }

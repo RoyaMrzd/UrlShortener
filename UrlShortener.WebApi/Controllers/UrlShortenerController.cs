@@ -6,8 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using UrlShortener.Application.UrlShorteners.Commands.CreateUrlShortener;
+using UrlShortener.Application.UrlShorteners.Commands.UrlShortenerAccessHistories;
 using UrlShortener.Application.UrlShorteners.Queries;
 using UrlShortener.WebApi.Models;
 
@@ -26,7 +29,7 @@ namespace UrlShortener.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateUrlShortenerCommand command)
+        public async Task<ActionResult> Post([FromBody] CreateUrlShortener command)
         {
             var result = await mediator.Send(command);
             return Ok(result);
@@ -42,6 +45,17 @@ namespace UrlShortener.WebApi.Controllers
         }
 
 
+        [HttpGet, Route("/{token}")]
+        public async Task<ActionResult> UrlRedirect([FromRoute] string token)
+        {
+            var request = new UrlShortenerItemRequestQuery() { Token = token };
+            var result = await mediator.Send(request);
+           
+            var requestHistory = new CreateUrlShortenerAccessHistory() { UrlShortenerEntityId = result.Id };
+            await mediator.Send(requestHistory);
+
+            return Redirect(result.ReturnUrl);
+        }
     }
 
 }
