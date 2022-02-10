@@ -18,10 +18,11 @@ namespace UrlShortener.WebApi.Controllers
     public class UrlShortenerController : ControllerBase
     {
         private readonly IMediator mediator;
-
-        public UrlShortenerController(IMediator mediator)
+        private readonly ILogger<UrlShortenerController> _logger;
+        public UrlShortenerController(IMediator mediator, ILogger<UrlShortenerController> logger)
         {
             this.mediator = mediator;
+            _logger = logger;
         }
 
         [HttpPost]
