@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace UrlShortener.Application.UrlShorteners.Commands.AppConfig
+namespace UrlShortener.Application.Common.AppConfig
 {
     public class Config
     {

@@ -6,7 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UrlShortener.Application.UrlShorteners.Commands.AppConfig;
+using UrlShortener.Application.Common.AppConfig;
+using UrlShortener.Application.Common.Exceptions;
 using UrlShortener.Domain.Entities;
 using UrlShortener.Persistence.Interfaces;
 
@@ -46,10 +47,10 @@ namespace UrlShortener.Application.UrlShorteners.Commands.CreateUrlShortener
             var urls = _unitOfWork.UrlShorteners.GetAll().Result;
 
             if (urls.Any(u => u.MainUrl == url))
-                throw new Exception("این آدرس قبلا وارد شده است");
+                throw new DuplicatedException("این آدرس قبلا وارد شده است");
 
             if (urls.Any(u => u.ShortestUrl == url))
-                throw new Exception("این آدرس کوتاه شده است");
+                throw new DuplicatedException("این آدرس کوتاه شده است");
 
         }
         private string GenerateToken()

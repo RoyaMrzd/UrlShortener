@@ -18,6 +18,7 @@ namespace UrlShortener.Persistence.Configuration
             builder.Property(x => x.MainUrl).IsRequired().HasMaxLength(200);
             builder.Property(x => x.ShortestUrl).IsRequired().HasMaxLength(50);
             builder.Property(x => x.ShortestCount).IsRequired();
+            builder.Property(x => x.Token).IsRequired();
         }
     }
 }

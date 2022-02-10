@@ -10,7 +10,7 @@ namespace UrlShortener.Domain.Common
     {
         public Guid CreatorUserId { get; set; }
         public DateTime CreationDateTime { get; set; }
-        public Guid LastModifiedUserId { get; set; }
+        public Guid? LastModifiedUserId { get; set; }
         public DateTime? LastModifiedDateTime { get; set; }
     }
 }
